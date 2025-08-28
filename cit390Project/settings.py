@@ -20,14 +20,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m4t*5dfyepz7t@6%e4=zvhn(k8w$=$j1dg-(u9$5#8%o*@*8-&'
+import environ 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Initialize environment variables 
 
-ALLOWED_HOSTS = ['*']
+env = environ.Env( 
 
+    DEBUG=(bool, False) 
+
+) 
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env')) 
+
+SECRET_KEY = env("SECRET_KEY") 
+DEBUG = env("DEBUG") 
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 # Application definition
 
@@ -83,18 +90,17 @@ WSGI_APPLICATION = 'cit390Project.wsgi.application'
     }
 }"""
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_db',
-        'USER': 'django_user',
-        'PASSWORD': 'yourpassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
