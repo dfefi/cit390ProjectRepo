@@ -48,6 +48,13 @@ INSTALLED_APPS = [
 'signupApp.apps.SignupappConfig',
 ]
 
+INSTALLED_APPS += ['storages']  # Required for django-storages
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'  # For media files
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'   # For static files 
+AZURE_ACCOUNT_NAME = env('AZURE_ACCOUNT_NAME')  # Your storage account name
+AZURE_ACCOUNT_KEY = env('AZURE_ACCOUNT_KEY')   # The secret access key
+AZURE_CONTAINER = env('AZURE_CONTAINER')        # Name of the container (e.g., staticfiles)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -91,7 +98,7 @@ WSGI_APPLICATION = 'cit390Project.wsgi.application'
 }"""
 
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DATABASE_NAME'),
@@ -101,6 +108,11 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
+"""
+DATABASES = {
+    'default': env.db_url('DATABASE_URL'),
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
