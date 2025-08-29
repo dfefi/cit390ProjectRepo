@@ -3,4 +3,5 @@
 .token
 .env2
 appservice-settings.py
+github-setsecrets.py
 
